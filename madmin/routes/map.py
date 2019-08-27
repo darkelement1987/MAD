@@ -55,7 +55,7 @@ class map(object):
         setlat = request.args.get('lat', 0)
         setlng = request.args.get('lng', 0)
         return render_template('map.html', lat=self._args.home_lat, lng=self._args.home_lng,
-                               running_ocr=self._args.only_ocr, setlat=setlat, setlng=setlng)
+                               setlat=setlat, setlng=setlng)
 
     @auth_required
     def get_position(self):
@@ -216,6 +216,7 @@ class map(object):
                 "lat": spawn["lat"],
                 "lon": spawn["lon"],
                 "spawndef": spawn["spawndef"],
+                "lastnonscan": spawn["lastnonscan"],
                 "lastscan": spawn["lastscan"],
                 "first_detection": spawn["first_detection"]
             })
@@ -361,7 +362,8 @@ class map(object):
         file = open(os.path.join(geofence_file_path, (str(name) + ".txt")), "a")
         file.write("[" + str(name) + "]\n")
         for i in range(len(coords_split)):
-            file.write(str(coords_split[i]) + "\n")
+            latlon_split = coords_split[i].split(",")
+            file.write("{0},{1}\n".format(str(float(latlon_split[0]) % 90), str(float(latlon_split[0]) % 360)))
 
         file.close()
 

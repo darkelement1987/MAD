@@ -805,6 +805,7 @@ class RouteManagerBase(ABC):
             entry: RoutePoolEntry = self._routepool[origin]
             return len(entry.subroute) - len(entry.queue), len(entry.subroute)
             # return (self._routepoolpositionmax[origin] - self._routepool[origin].qsize()), len(self._route)
+            return (self._routepoolpositionmax[origin] - self._routepool[origin].qsize()), len(self._route)
         return 1, 1
 
     def get_rounds(self, origin: str) -> int:
